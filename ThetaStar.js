@@ -20,6 +20,9 @@ class ThetaStar {
 
   /**
    * Searches for the shortest path in the graph.
+   * How the algorithm works is explained here:
+   * - https://en.wikipedia.org/wiki/Theta*
+   * - https://arxiv.org/pdf/1401.3843.pdf (Please note, that their line-of-sight function does not work. The line-of-sight algorithm is from here: https://www.baeldung.com/cs/bresenhams-line-algorithm)
    * 
    * @param {integer} x1 
    * @param {integer} y1 
