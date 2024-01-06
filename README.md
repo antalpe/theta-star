@@ -2,7 +2,7 @@
 Framework-independent pathfinding algorithm Theta*.
 
 # Installation
-Copy ThetaStar.js to your code and use `<script src="ThetaStar.js"></script>` to make it visible for the code.
+Copy `ThetaStar.js` to your code and make it useable by `<script src="ThetaStar.js"></script>`.
 
 # Example
 ```javascript
