@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="ThetaStar.js"></script>
+</head>
+<body>
+<script>
+
+  let graph = [
+    [1, 1, 1, 1, 1,],
+    [1, 1, 1, 1, 1,],
+    [1, 0, 0, 0, 1,],
+    [1, 1, 1, 1, 1,],
+    [1, 1, 1, 1, 1,],
+  ];
+  let th = new ThetaStar(graph);
+  let path = th.search(1, 1, 3, 4);
+  console.log(path);
+
+</script>
+</body>
+</html>
