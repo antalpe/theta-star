@@ -1,2 +1,2 @@
 # theta-star
-Independent pathfinding algorithm Theta*
+Framework-independent pathfinding algorithm Theta*.
