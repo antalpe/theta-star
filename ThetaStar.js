@@ -6,7 +6,7 @@ class ThetaStar {
   /**
    * Construct the Theta* searching object.
    * 
-   * @param {integer[][]} graph 2D array of numbers. Currently, 0 means "not walkable", anything means "walkable".
+   * @param {integer[][]} graph 2D array of numbers. Currently, 0 means "not walkable", anything else means "walkable".
    */
   constructor(graph /* 2d array of numbers */) {
     this._graph = [];
