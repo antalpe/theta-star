@@ -2,27 +2,28 @@ class ThetaStar {
   _graph; // PathfindingNode[][]
   _openNodes;
   _closedNodes;
+  _tileSize;
 
   /**
    * Construct the Theta* searching object.
    * 
    * @param {integer[][]} graph 2D array of numbers. Currently, 0 means "not walkable", anything else means "walkable".
+   * @param {integer} tileSize Size of tiles in the graph/grid.
+   * @param {integer} collisionFreeNumber Denotes which value should be considered "walkable".
    */
-  constructor(graph /* 2d array of numbers */) {
+  constructor(graph, tileSize, collisionFreeNumber) {
+    this._tileSize = tileSize;
     this._graph = [];
     for(let i = 0; i < graph.length; i++) {
       this._graph.push([]);
       for(let ii = 0; ii < graph[i].length; ii++) {
-        this._graph[i].push(new PathfindingNode(ii, i, graph[i][ii]));
+        this._graph[i].push(new PathfindingNode(ii, i, graph[i][ii] === collisionFreeNumber));
       }
     }
   }
 
   /**
    * Searches for the shortest path in the graph.
-   * How the algorithm works is explained here:
-   * - https://en.wikipedia.org/wiki/Theta*
-   * - https://arxiv.org/pdf/1401.3843.pdf (Please note, that their line-of-sight function does not work. The line-of-sight algorithm is from here: https://www.baeldung.com/cs/bresenhams-line-algorithm)
    * 
    * @param {integer} x1 
    * @param {integer} y1 
@@ -34,8 +35,8 @@ class ThetaStar {
     this._openNodes = [];
     this._closedNodes = [];
 
-    const startNode = this._getNode(x1, y1);
-    const targetNode = this._getNode(x2, y2);
+    const startNode = this._getNode(Math.floor(x1 / this._tileSize), Math.floor(y1 / this._tileSize));
+    const targetNode = this._getNode(Math.floor(x2 / this._tileSize), Math.floor(y2 / this._tileSize));
     startNode.g = 0;
     startNode.parent = startNode;
     this._openNodes.push(startNode);
@@ -138,14 +139,14 @@ class ThetaStar {
     let node = destinationNode;
     while(node.parent !== node) {
       path.unshift({
-        x: node.x,
-        y: node.y,
+        x: node.x * this._tileSize,
+        y: node.y * this._tileSize,
       });
       node = node.parent;
     }
     path.unshift({
-      x: node.x,
-      y: node.y,
+      x: node.x * this._tileSize,
+      y: node.y * this._tileSize,
     });
     return path;
   }
