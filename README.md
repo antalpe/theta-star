@@ -18,7 +18,7 @@ let graph = [
   [1, 1, 1, 1, 1,],
   [1, 1, 1, 1, 1,],
 ];
-let th = new ThetaStar(graph);
+let th = new ThetaStar(graph, 1, 1);
 let path = th.search(1, 1, 3, 4);
 
 console.log(path);
