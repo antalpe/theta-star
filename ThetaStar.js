@@ -11,7 +11,7 @@ class ThetaStar {
    * @param {integer} tileSize Size of tiles in the graph/grid.
    * @param {integer} collisionFreeNumber Denotes which value should be considered "walkable".
    */
-  constructor(graph, tileSize, collisionFreeNumber) {
+  constructor(graph /* 2d array of numbers */, tileSize, collisionFreeNumber) {
     this._tileSize = tileSize;
     this._graph = [];
     for(let i = 0; i < graph.length; i++) {
@@ -41,13 +41,15 @@ class ThetaStar {
     startNode.parent = startNode;
     this._openNodes.push(startNode);
     while(this._openNodes.length > 0) {
-      this._openNodes.sort(this._compareNodes);
-      let currentNode = this._openNodes.shift();
+      let currentNode = this._getBestNode(this._openNodes);
+      this._openNodes.splice(this._openNodes.indexOf(currentNode), 1);
+      this._closedNodes.push(currentNode);
       if(currentNode === targetNode) {
         // Reached target node, return resulting path
-        return this._reconstructPath(currentNode);
+        let finalPath = this._reconstructPath(currentNode);
+        this._cleanup();
+        return finalPath;
       }
-      this._closedNodes.push(currentNode);
       let neighbors = this._getNeighbors(currentNode);
       for(let n = 0; n < neighbors.length; n++) {
         if(this._closedNodes.includes(neighbors[n])) {
@@ -56,6 +58,7 @@ class ThetaStar {
         this._updateVertex(currentNode, neighbors[n], targetNode);
       }
     }
+    this._cleanup();
     return null;
   }
 
@@ -151,11 +154,30 @@ class ThetaStar {
     return path;
   }
 
+  _cleanup() {
+    for(let i = 0; i < this._openNodes.length; i++) {
+      this._openNodes[i].reset();
+    }
+    for(let i = 0; i < this._closedNodes.length; i++) {
+      this._closedNodes[i].reset();
+    }
+  }
+
   _compareNodes(nodeA, nodeB) {
     if(nodeA.f === nodeB.f) {
       return nodeA.h - nodeB.h;
     }
     return nodeA.f - nodeB.f;
+  }
+
+  _getBestNode(nodes) {
+    let best = nodes[0];
+    for(let i = 1; i < nodes.length; i++) {
+      if(this._compareNodes(nodes[i], best) < 0) {
+        best = nodes[i];
+      }
+    }
+    return best;
   }
 
   _getDistance(node1, node2) {
@@ -204,6 +226,10 @@ class PathfindingNode {
     this.x = x;
     this.y = y;
     this.walkable = walkable;
+    this.reset();
+  }
+
+  reset() {
     this.g = Infinity;
     this.h = Infinity;
     this.f = Infinity;
